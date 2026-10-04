@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MG AI Video</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#0b0b0f;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    max-width:750px;
+    margin:auto;
+    padding:20px;
+}
+
+.box{
+    background:#17171d;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 0 30px rgba(0,0,0,.5);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:5px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#aaa;
+    margin-bottom:25px;
+}
+
+label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:8px;
+    font-weight:bold;
+}
+
+textarea,
+select,
+input{
+    width:100%;
+    box-sizing:border-box;
+    background:#0d0d12;
+    color:white;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:14px;
+    font-size:16px;
+}
+
+textarea{
+    height:180px;
+    resize:vertical;
+}
+
+button{
+    width:100%;
+    border:0;
+    border-radius:12px;
+    padding:15px;
+    margin-top:18px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    background:white;
+    color:#111;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.result{
+    margin-top:25px;
+}
+
+video{
+    width:100%;
+    border-radius:15px;
+    background:#000;
+}
+
+#download{
+    display:none;
+    text-align:center;
+    text-decoration:none;
+    background:white;
+    color:#111;
+    padding:14px;
+    border-radius:12px;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.status{
+    text-align:center;
+    color:#aaa;
+    margin-top:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="box">
+
+<h1>🎬 MG AI Video</h1>
+
+<div class="subtitle">
+أنشئ فيديو بسهولة من فكرتك
+</div>
+
+<label>
+✍️ اكتب فكرة الفيديو أو السيناريو
+</label>
+
+<textarea
+id="text"
+placeholder="مثال: اليوم سنبدأ مغامرة جديدة في جزيرة مليئة بالأسرار..."
+></textarea>
+
+<label>
+📱 اختر مقاس الفيديو
+</label>
+
+<select id="ratio">
+
+<option value="16:9">
+16:9 — فيديو يوتيوب
+</option>
+
+<option value="9:16">
+9:16 — شورتس وتيك توك
+</option>
+
+</select>
+
+<label>
+🖼️ أضف صورة للفيديو
+</label>
+
+<input
+type="file"
+id="image"
+accept="image/*"
+>
+
+<button onclick="createVideo()">
+
+🎬 إنشاء الفيديو
+
+</button>
+
+<div class="status" id="status">
+
+اكتب فكرة الفيديو ثم اضغط إنشاء الفيديو.
+
+</div>
+
+<div class="result">
+
+<video
+id="video"
+controls
+></video>
+
+<a
+id="download"
+download="mg-ai-video.webm"
+>
+
+⬇️ تحميل الفيديو
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function createVideo(){
+
+const text =
+document.getElementById("text").value.trim();
+
+if(!text){
+
+alert("اكتب فكرة الفيديو أولاً");
+
+return;
+
+}
+
+const status =
+document.getElementById("status");
+
+status.innerText =
+"⏳ جاري تجهيز الفيديو...";
+
+const ratio =
+document.getElementById("ratio").value;
+
+const canvas =
+document.createElement("canvas");
+
+if(ratio === "16:9"){
+
+canvas.width = 1280;
+canvas.height = 720;
+
+}else{
+
+canvas.width = 720;
+canvas.height = 1280;
+
+}
+
+const ctx =
+canvas.getContext("2d");
+
+ctx.fillStyle = "#151923";
+
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+ctx.fillStyle = "white";
+
+ctx.textAlign = "center";
+
+ctx.textBaseline = "middle";
+
+ctx.font =
+"bold 55px Arial";
+
+let words =
+text.split(" ");
+
+let lines = [];
+
+let line = "";
+
+words.forEach(word => {
+
+let test =
