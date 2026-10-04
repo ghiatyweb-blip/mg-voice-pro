@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>MG AI Video</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+
+margin:0;
+
+background:
+linear-gradient(
+135deg,
+#08090d,
+#151827
+);
+
+color:#ffffff;
+
+font-family:
+Arial,
+Tahoma,
+sans-serif;
+
+min-height:100vh;
+
+}
+
+.container{
+
+width:100%;
+
+max-width:850px;
+
+margin:auto;
+
+padding:20px;
+
+}
+
+.header{
+
+text-align:center;
+
+padding:20px 10px;
+
+}
+
+.logo{
+
+font-size:38px;
+
+font-weight:bold;
+
+}
+
+.header p{
+
+color:#aeb4c2;
+
+font-size:16px;
+
+}
+
+.card{
+
+background:#171a25;
+
+border:1px solid #292e3d;
+
+border-radius:20px;
+
+padding:22px;
+
+box-shadow:
+0 15px 50px
+rgba(0,0,0,.35);
+
+}
+
+label{
+
+display:block;
+
+margin-top:18px;
+
+margin-bottom:8px;
+
+font-weight:bold;
+
+font-size:16px;
+
+}
+
+textarea{
+
+width:100%;
+
+height:180px;
+
+resize:vertical;
+
+background:#0d1017;
+
+border:1px solid #343a4b;
+
+border-radius:14px;
+
+padding:15px;
+
+color:white;
+
+font-size:17px;
+
+outline:none;
+
+}
+
+textarea:focus{
+
+border-color:#6c7cff;
+
+}
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+gap:12px;
+
+}
+
+select,
+input[type="file"]{
+
+width:100%;
+
+background:#0d1017;
+
+border:1px solid #343a4b;
+
+border-radius:12px;
+
+padding:13px;
+
+color:white;
+
+font-size:16px;
+
+}
+
+button{
+
+width:100%;
+
+border:0;
+
+border-radius:13px;
+
+padding:15px;
+
+margin-top:20px;
+
+font-size:17px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+background:#ffffff;
+
+color:#111111;
+
+}
+
+button:hover{
+
+opacity:.9;
+
+}
+
+button:disabled{
+
+opacity:.5;
+
+cursor:not-allowed;
+
+}
+
+.status{
+
+margin-top:18px;
+
+padding:13px;
+
+border-radius:12px;
+
+background:#0e1118;
+
+text-align:center;
+
+color:#b8bfce;
+
+}
+
+.preview{
+
+margin-top:20px;
+
+}
+
+canvas{
+
+display:block;
+
+width:100%;
+
+height:auto;
+
+border-radius:15px;
+
+background:#000;
+
+}
+
+.video-box{
+
+margin-top:20px;
+
+display:none;
+
+}
+
+video{
+
+width:100%;
+
+border-radius:15px;
+
+background:#000;
+
+}
+
+.download{
+
+display:none;
+
+margin-top:15px;
+
+text-align:center;
+
+text-decoration:none;
+
+background:#ffffff;
+
+color:#111;
+
+padding:14px;
+
+border-radius:12px;
+
+font-weight:bold;
+
+}
+
+.info{
+
+margin-top:20px;
+
+padding:15px;
+
+border-radius:14px;
+
+background:#10131b;
+
+color:#aeb4c2;
+
+font-size:14px;
+
+line-height:1.8;
+
+}
+
+.footer{
+
+text-align:center;
+
+color:#737b8c;
+
+font-size:13px;
+
+padding:25px 10px;
+
+}
+
+@media(max-width:600px){
+
+.container{
+
+padding:12px;
+
+}
+
+.card{
+
+padding:15px;
+
+}
+
+.grid{
+
+grid-template-columns:1fr;
+
+}
+
+.logo{
+
+font-size:30px;
+
+}
+
+textarea{
+
+height:160px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<div class="container">
+
+
+<div class="header">
+
+<div class="logo">
+
+🎬 MG AI Video
+
+</div>
+
+<p>
+
+أداة مجانية لإنشاء فيديوهات من النص والصور
+
+</p>
+
+</div>
+
+
+<div class="card">
+
+
+<label>
+
+✍️ اكتب فكرة الفيديو أو السيناريو
+
+</label>
+
+
+<textarea
+
+id="script"
+
+placeholder="اكتب هنا فكرة الفيديو...
+
+مثال:
+
+اليوم نبدأ مغامرة جديدة في جزيرة غامضة، ونحاول العثور على الكنز قبل غروب الشمس."
+
+></textarea>
+
+
+<div class="grid">
+
+
+<div>
+
+<label>
+
+📺 مقاس الفيديو
+
+</label>
+
+
+<select id="ratio">
+
+<option value="16:9">
+
+16:9 — يوتيوب
+
+</option>
+
+<option value="9:16">
+
+9:16 — شورتس
+
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+
+⏱️ مدة المشهد
+
+</label>
+
+
+<select id="duration">
+
+<option value="3">
+
+3 ثواني
+
+</option>
+
+<option value="4" selected>
+
+4 ثواني
+
+</option>
+
+<option value="5">
+
+5 ثواني
+
+</option>
+
+<option value="6">
+
+6 ثواني
+
+</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+<label>
+
+🖼️ صورة اختيارية
+
+</label>
+
+
+<input
+
+type="file"
+
+id="imageInput"
+
+accept="image/*"
+
+>
+
+
+<button
+
+id="previewButton"
+
+>
+
+👁️ معاينة الفيديو
+
+</button>
+
+
+<button
+
+id="createButton"
+
+disabled
+
+>
+
+🎬 إنشاء الفيديو
+
+</button>
+
+
+<div
+
+class="status"
+
+id="status"
+
+>
+
+اكتب النص أولًا ثم اضغط على معاينة الفيديو.
+
+</div>
+
+
+<div class="preview">
+
+<canvas id="canvas"></canvas>
+
+</div>
+
+
+<div
+
+class="video-box"
+
+id="videoBox"
+
+>
+
+<video
+
+id="video"
+
+controls
+
+></video>
+
+</div>
+
+
+<a
+
+id="download"
+
+class="download"
+
+download="mg-ai-video.webm"
+
+>
+
+⬇️ تحميل الفيديو
+
+</a>
+
+
+<div class="info">
+
+<b>💡 النسخة المجانية</b>
+
+<br>
+
+هذه النسخة تعمل مباشرة من المتصفح ولا تحتاج إلى مفتاح API أو بطاقة بنكية.
+
+<br><br>
+
+النسخة التالية يمكن تطويرها لإضافة:
+
+<br>
+
+🖼️ إنشاء صور بالذكاء الاصطناعي
+
+<br>
+
+🎙️ صوت عربي
+
+<br>
+
+📝 ترجمة تلقائية
+
+<br>
+
+🎥 حركة للمشاهد
+
+<br>
+
+🤖 توليد فيديو بالذكاء الاصطناعي
+
+</div>
+
+
+</div>
+
+
+<div class="footer">
+
+MG AI Video — مشروع MG Gaming
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+const scriptInput =
+document.getElementById("script");
+
+
+const ratioInput =
+document.getElementById("ratio");
+
+
+const durationInput =
+document.getElementById("duration");
+
+
+const imageInput =
+document.getElementById("imageInput");
+
+
+const previewButton =
+document.getElementById("previewButton");
+
+
+const createButton =
+document.getElementById("createButton");
+
+
+const status =
+document.getElementById("status");
+
+
+const canvas =
+document.getElementById("canvas");
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+const videoBox =
+document.getElementById("videoBox");
+
+
+const video =
+document.getElementById("video");
+
+
+const download =
+document.getElementById("download");
+
+
+let scenes = [];
+
+let uploadedImage = null;
+
+
+function setupCanvas(){
+
+const ratio =
+ratioInput.value;
+
+
+if(ratio === "16:9"){
+
+canvas.width = 1280;
+
+canvas.height = 720;
+
+}
+
+else{
+
+canvas.width = 720;
+
+canvas.height = 1280;
+
+}
+
+}
+
+
+function splitScenes(text){
+
+return text
+
+.split(/[.!؟?\n]+/)
+
+.map(
+item => item.trim()
+)
+
+.filter(
+item => item.length > 0
+);
+
+}
+
+
+function drawScene(text,index,total){
+
+const width =
+canvas.width;
+
+const height =
+canvas.height;
+
+
+const gradient =
+ctx.createLinearGradient(
+0,
+0,
+width,
+height
+);
+
+
+gradient.addColorStop(
+0,
+"#101522"
+);
+
+gradient.addColorStop(
+1,
+"#27324a"
+);
+
+
+ctx.fillStyle =
+gradient;
+
+ctx.fillRect(
+0,
+0,
+width,
+height
+);
+
+
+if(uploadedImage){
+
+const imageRatio =
+uploadedImage.width /
+uploadedImage.height;
+
+const canvasRatio =
+width / height;
+
+let drawWidth;
+
+let drawHeight;
+
+if(imageRatio > canvasRatio){
+
+drawHeight =
+height;
+
+drawWidth =
+height * imageRatio;
+
+}
+
+else{
+
+drawWidth =
+width;
+
+drawHeight =
+width / imageRatio;
+
+}
+
+
+ctx.globalAlpha =
+0.35;
+
+
+ctx.drawImage(
+
+uploadedImage,
+
+(width - drawWidth) / 2,
+
+(height - drawHeight) / 2,
+
+drawWidth,
+
+drawHeight
+
+);
+
+
+ctx.globalAlpha =
+1;
+
+}
+
+
+ctx.fillStyle =
+"rgba(0,0,0,.48)";
+
+
+ctx.fillRect(
+0,
+0,
+width,
+height
+);
+
+
+ctx.textAlign =
+"center";
+
+ctx.textBaseline =
+"middle";
+
+
+const fontSize =
+Math.max(
+32,
+Math.floor(width / 24)
+);
+
+
+ctx.font =
+"bold " +
+fontSize +
+"px Arial";
+
+
+ctx.fillStyle =
+"#ffffff";
+
+
+const words =
+text.split(" ");
+
+
+const lines = [];
+
+let line = "";
+
+
+for(
+let i=0;
+i<words.length;
+i++
+){
+
+const test =
+line +
+(words[i] ? " " + words[i] : "");
+
+
+if(
+
+ctx.measureText(test)
+.width
+>
+width * 0.78
+
+){
+
+lines.push(line);
+
+line =
+words[i];
+
+}
+
+else{
+
+line =
+test;
+
+}
+
+}
+
+
+if(line){
+
+lines.push(line);
+
+}
+
+
+const lineHeight =
+fontSize * 1.45;
+
+
+const totalHeight =
+lines.length *
+lineHeight;
+
+
+const startY =
+(height / 2) -
+(totalHeight / 2) +
+(lineHeight / 2);
+
+
+lines.forEach(
+(line,lineIndex)=>{
+
+ctx.fillText(
+
+line,
+
+width / 2,
+
+startY +
+(lineIndex * lineHeight)
+
+);
+
+});
+
+
+ctx.font =
+"bold 24px Arial";
+
+
+ctx.fillStyle =
+"rgba(255,255,255,.65)";
+
+
+ctx.fillText(
+
+"MG AI VIDEO",
+
+width / 2,
+
+height - 35
+
+);
+
+
+ctx.font =
+"20px Arial";
+
+
+ctx.fillStyle =
+"rgba(255,255,255,.5)";
+
+
+ctx.fillText(
+
+(index + 1) +
+" / " +
+total,
+
+width - 70,
+
+35
+
+);
+
+}
+
+
+imageInput.addEventListener(
+"change",
+function(){
+
+const file =
+this.files[0];
+
+if(!file){
+
+uploadedImage =
+null;
+
+return;
+
+}
+
+
+const reader =
+new FileReader();
+
+
+reader.onload =
+function(event){
+
+const img =
+new Image();
+
+
+img.onload =
+function(){
+
+uploadedImage =
+img;
+
+status.innerText =
+"🖼️ تم تحميل الصورة.";
+
+setupCanvas();
+
+if(scenes.length){
+
+drawScene(
+scenes[0],
+0,
+scenes.length
+);
+
+}
+
+};
+
+
+img.src =
+event.target.result;
+
+};
+
+
+reader.readAsDataURL(file);
+
+});
+
+
+previewButton.addEventListener(
+"click",
+function(){
+
+const text =
+scriptInput.value.trim();
+
+
+if(!text){
+
+alert(
+"من فضلك اكتب فكرة الفيديو أولًا."
+);
+
+return;
+
+}
+
+
+setupCanvas();
+
+
+scenes =
+splitScenes(text);
+
+
+if(!scenes.length){
+
+alert(
+"لم يتم العثور على نص مناسب."
+);
+
+return;
+
+}
+
+
+drawScene(
+scenes[0],
+0,
+scenes.length
+);
+
+
+createButton.disabled =
+false;
+
+
+status.innerText =
+
+"✅ تم تجهيز " +
+scenes.length +
+" مشهد. يمكنك الآن إنشاء الفيديو.";
+
+});
+
+
+createButton.addEventListener(
+"click",
+async function(){
+
+if(!scenes.length){
+
+return;
+
+}
+
+
+createButton.disabled =
+true;
+
+previewButton.disabled =
+true;
+
+
+download.style.display =
+"none";
+
+videoBox.style.display =
+"none";
+
+
+const seconds =
+Number(
+durationInput.value
+);
+
+
+status.innerText =
+"⏳ جاري إنشاء الفيديو...";
+
+
+const stream =
+canvas.captureStream(30);
+
+
+let recorder;
+
+
+try{
+
+recorder =
+new MediaRecorder(
+stream,
+{
+mimeType:
+"video/webm"
+}
+);
+
+}
+
+catch(error){
+
+recorder =
+new MediaRecorder(stream);
+
+}
+
+
+const chunks = [];
+
+
+recorder.ondataavailable =
+function(event){
+
+if(event.data.size > 0){
+
+chunks.push(
+event.data
+);
+
+}
+
+};
+
+
+const finished =
+new Promise(
+resolve => {
+
+recorder.onstop =
+resolve;
+
+});
+
+
+recorder.start();
+
+
+for(
+let i=0;
+i<scenes.length;
+i++
+){
+
+drawScene(
+scenes[i],
+i,
+scenes.length
+);
+
+
+status.innerText =
+
+"🎬 إنشاء المشهد " +
+(i + 1) +
+" من " +
+scenes.length;
+
+
+await new Promise(
+resolve =>
+setTimeout(
+resolve,
+seconds * 1000
+)
+);
+
+}
+
+
+recorder.stop();
+
+
+await finished;
+
+
+const blob =
+new Blob(
+chunks,
+{
+type:
+"video/webm"
+}
+);
+
+
+const url =
+URL.createObjectURL(blob);
+
+
+video.src =
+url;
+
+
+videoBox.style.display =
+"block";
+
+
+download.href =
+url;
+
+
+download.style.display =
+"block";
+
+
+status.innerText =
+"✅ تم إنشاء الفيديو بنجاح!";
+
+
+createButton.disabled =
+false;
+
+previewButton.disabled =
+false;
+
+});
+
+
+setupCanvas();
+
+drawScene(
+"MG AI Video",
+0,
+1
+);
+
+
+</script>
+
+
+</body>
+
+  </html>
