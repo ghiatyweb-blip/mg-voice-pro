@@ -1,0 +1,13 @@
+{
+  "name": "mg-voice-pro",
+  "version": "1.0.0",
+  "description": "MG Voice Pro - Egyptian Arabic TTS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@travisvn/edge-tts": "^1.0.0",
+    "express": "^4.21.2"
+  }
+}
